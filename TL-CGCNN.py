@@ -167,11 +167,13 @@ def main():
         print("=> no model found at '{}'".format(args.modelpath))
     
     j = model_args.n_conv
+    for param in model.embedding.parameters():
+        param.requires_grad = False
     for a in range(j):
         for param in model.convs[a].parameters():
             param.requires_grad = False
     for param in model.conv_to_fc.parameters():
-            param.requires_grad = False        
+        param.requires_grad = False        
     
     model.fcs[0] = nn.Linear(in_features=model_args.h_fea_len, out_features=args.fc_fea_len, bias=True)
     
